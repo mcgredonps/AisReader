@@ -63,6 +63,8 @@ public class TcpReader
     public void readData()
     {
         int lineNumber = 0;
+        while(breakOutOfReadLoop == false)
+        {
         try
         {
             BufferedReader socketReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -93,6 +95,7 @@ public class TcpReader
         finally
         {
             System.out.println("</AISPositionReports>");
+        }
         }
         
     }

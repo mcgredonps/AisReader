@@ -2,6 +2,12 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/Users/mcgredo/projects/AisReader/src/edu/nps/moves/ais/Defaults.java</file>
+            <file>file:/Users/mcgredo/projects/AisReader/src/edu/nps/moves/ais/XMLWriter.java</file>
+            <file>file:/Users/mcgredo/projects/AisReader/src/edu/nps/moves/ais/AisErrorHandler.java</file>
+            <file>file:/Users/mcgredo/projects/AisReader/src/edu/nps/moves/ais/TcpReader.java</file>
+            <file>file:/Users/mcgredo/projects/AisReader/src/edu/nps/moves/ais/AisMessageHandler.java</file>
+        </group>
     </open-files>
 </project-private>
