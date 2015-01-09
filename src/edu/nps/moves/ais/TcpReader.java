@@ -63,8 +63,8 @@ public class TcpReader
     public void readData()
     {
         int lineNumber = 0;
-        while(breakOutOfReadLoop == false)
-        {
+        //while(breakOutOfReadLoop == false)
+        //{
         try
         {
             BufferedReader socketReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -76,6 +76,10 @@ public class TcpReader
             // we read only for a timeout period, then exit. Which is sorta OK for a demo
             // program.
             
+            AISEntityTable.getInstance();
+            Thread updateThread = new Thread(new DISUpdater());
+            updateThread.start();
+        
             // Read line by line, and decode each line. "provenance" is where the data
             // came from, which doesn't really make sense in this context (it all comes
             // from the AIS server) but the box has to be checked.
@@ -96,7 +100,7 @@ public class TcpReader
         {
             System.out.println("</AISPositionReports>");
         }
-        }
+        //}
         
     }
     

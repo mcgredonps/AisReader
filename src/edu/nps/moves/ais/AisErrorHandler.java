@@ -17,19 +17,19 @@ public class AisErrorHandler implements HandleInvalidInput
     @Override
     public void handleInvalidVDMMessage(VDMMessage invalidVDMMessage)
     {
-        //System.err.println("Invalid VDM Message");
+        System.err.println("Invalid VDM Message");
     }
     
     @Override
     public void	handleInvalidVDMLine(VDMLine invalidVDMLine) 
     {
-        //System.err.println("Invalid VDM Line");
+        System.err.println("Invalid VDM Line");
     }
     
     @Override
     public void	handleInvalidSensorData(Provenance source, String sensorData) 
     {
-        //System.err.println("Invalid sensor data");
+        System.err.println("Invalid sensor data");
     }
     
 }
