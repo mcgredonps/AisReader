@@ -8,6 +8,9 @@ import edu.nps.moves.dis.*;
 import edu.nps.moves.disutil.*;
 
 /**
+ * Contains a table that maps AIS user IDs to DIS state information. A singleton,
+ * this maps AIS IDs to DIS state information, including position, entityID, 
+ * ship name, and so on.<p>
  * 
  * @author DMcG
  */
@@ -19,14 +22,14 @@ public class AISEntityTable
     private static AISEntityTable instance = null;
         
     /** Hashmap, keyed by AIS entity ID, with a value containing DIS information. */
-    private ConcurrentMap<Integer, DISInfo> aisEntities;
+    private ConcurrentMap<Integer, DISStateInfo> aisEntities;
     
     /**
      * Site an application IDs, for the DIS entity ID triplet. This should be
-     * moved to a properties file rather than hard coded.
+     * moved to an external properties file rather than hard coded.
      */
     private static final int SITE_ID        = 4242;
-    private static int APPLICATION_ID = 4545;
+    private static int       APPLICATION_ID = 4545;
     
     /** 
      * The next entity ID to assign. Note that this must be less than the
@@ -55,14 +58,16 @@ public class AISEntityTable
      */
     private AISEntityTable()
     {
-        aisEntities = new ConcurrentHashMap<Integer, DISInfo>(); 
+        aisEntities = new ConcurrentHashMap<Integer, DISStateInfo>(); 
     }
     
     /**
      * Get the next-highest DIS entity ID. Note that the max is 2^16 - 1,
-     * and this may not be enough to represent all ships. If that's the case,
-     * you should rework this to use multiple app IDs. 
-     * @return 
+     * and this may not be enough to represent all ships. If we hit max
+     * for the entityID, we increment the appID and reset the entity ID back
+     * to one.<p>
+     * 
+     * @return next available entity ID
      */
     private int getNextEntityID()
     {
@@ -81,12 +86,22 @@ public class AISEntityTable
         return val;
     }
     
+    /** 
+     * We receive an AIS position report. Add it to the state table, either by
+     * updating an existing state object for that AIS ID, or, if this is the
+     * first time we've heard of that AIS ID, create a new entry in the table
+     * for state information about that entity.
+     * 
+     * @param aisPosition AIS position update
+     */
     public void setAISPositionReport(AISMessagePositionReport aisPosition)
     {
-        DISInfo info = aisEntities.get(aisPosition.getUserID());
+        // Retrieve state information for this AIS entity. If we get null back,
+        //
+        DISStateInfo info = aisEntities.get(aisPosition.getUserID());
         if(info == null)
         {
-            info = new DISInfo(aisPosition);
+            info = new DISStateInfo(aisPosition);
             
             info.lastAISReport = new Date();
             // Set the entityID
@@ -104,7 +119,8 @@ public class AISEntityTable
             
             info.espdu = pdu;
             
-            // Close enough for now--should also set DR, speed, etc. Also marking
+            // Close enough for now--should also set DR, speed, etc. Also marking, with
+            // messages from other AIS message types.
         }
         
         // Position
@@ -136,7 +152,7 @@ public class AISEntityTable
         Iterator it = values.iterator();
         while(it.hasNext())
         {
-            DISInfo info = (DISInfo)it.next();
+            DISStateInfo info = (DISStateInfo)it.next();
             Date now = new Date();
             if(info.lastEspduUpdate == null || info.lastEspduUpdate.getTime() + DISNetwork.HEARTBEAT > now.getTime())
             {

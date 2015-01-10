@@ -17,6 +17,8 @@ public class AisMessageHandler implements HandleAISMessage
         
         AISEntityTable entityTable = AISEntityTable.getInstance();
         
+        
+        
         switch(message.getMessageID())
         {
             // AIS message types 1, 2, and 3 are all variants of position reports.
