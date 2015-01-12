@@ -48,6 +48,7 @@ public class AISEntityTable
         if(instance == null)
         {
             instance = new AISEntityTable();
+            System.out.println("Created AIS State table");
         }
         
         return instance;
@@ -109,6 +110,7 @@ public class AISEntityTable
             pdu.getEntityID().setSite(SITE_ID);
             pdu.getEntityID().setEntity(this.getNextEntityID());
             pdu.getEntityID().setApplication(APPLICATION_ID);
+            //System.out.println("new DIS entity, " + pdu.getEntityID().getEntity());
 
             // Set the entity type
             pdu.getEntityType().setEntityKind((short)1);  // Entity in world
@@ -118,6 +120,8 @@ public class AISEntityTable
             pdu.getEntityType().setSubcategory((short)3); // large fishing trawler
             
             info.espdu = pdu;
+            
+            aisEntities.put(aisPosition.getUserID(), info);
             
             // Close enough for now--should also set DR, speed, etc. Also marking, with
             // messages from other AIS message types.
@@ -150,6 +154,8 @@ public class AISEntityTable
         
         Collection values = aisEntities.values();
         Iterator it = values.iterator();
+        System.out.println("Sending updates for state table, number of entries=" + values.size());
+        
         while(it.hasNext())
         {
             DISStateInfo info = (DISStateInfo)it.next();

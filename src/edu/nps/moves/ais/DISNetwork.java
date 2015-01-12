@@ -18,7 +18,11 @@ public class DISNetwork
     /** Heartbeat period, in ms */
     public static final int HEARTBEAT = 5000;
     public static final int DIS_PORT = 3000;
-    public static final String BROADCAST_ADDRESS = "172.20.81.255";
+    
+    /** This is hardcoded, but it should be found at runtime by walking the
+     * NetworkInterface objects.
+     */
+    public static final String BROADCAST_ADDRESS = "172.20.83.255";
     public InetAddress bcastAddress;
     
     DatagramSocket socket = null;

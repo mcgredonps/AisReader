@@ -12,6 +12,7 @@ public class DISUpdater implements Runnable
     {
         while(true)
         {
+            System.out.println("Sending heartbeat for entire state table");
             AISEntityTable entityTable = AISEntityTable.getInstance();
             entityTable.doDISNetworkUpdates();
             try

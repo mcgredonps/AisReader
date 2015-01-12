@@ -69,8 +69,6 @@ public class TcpReader
         {
             BufferedReader socketReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             
-            System.out.println("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
-            System.out.println("<AISPositionReports>");
             
             // Because the AIS server pumps out such a huge amount of data, by default
             // we read only for a timeout period, then exit. Which is sorta OK for a demo
@@ -98,7 +96,7 @@ public class TcpReader
         }
         finally
         {
-            System.out.println("</AISPositionReports>");
+            //System.out.println("</AISPositionReports>");
         }
         //}
         
@@ -181,7 +179,7 @@ public class TcpReader
         
         try
         { 
-            TcpReader reader = new TcpReader(hostIp, portInt);
+            final TcpReader reader = new TcpReader(hostIp, portInt);
             
             // Run for some amount of time, then flip a switch to break out of the
             // read loop on the AIS server. This is here only for demo program

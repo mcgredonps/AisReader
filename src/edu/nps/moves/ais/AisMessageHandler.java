@@ -29,6 +29,7 @@ public class AisMessageHandler implements HandleAISMessage
                 AISMessagePositionReport positionReport = (AISMessagePositionReport)message;
                 entityTable.setAISPositionReport(positionReport);
                 
+                /*
                 int navStatus = positionReport.getNavigationalStatus();
                 int rateOfTurn = positionReport.getRateOfTurn();
                 int speedOverGround = positionReport.getSpeedOverGround();
@@ -54,6 +55,7 @@ public class AisMessageHandler implements HandleAISMessage
                 line = line + " longitude=\"" + longitude + "\"";
                 line = line + "/>";
                 System.out.println(line);
+                    */
                 
                 
                 break;
