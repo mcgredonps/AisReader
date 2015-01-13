@@ -22,7 +22,7 @@ public class DISNetwork
     /** This is hardcoded, but it should be found at runtime by walking the
      * NetworkInterface objects.
      */
-    public static final String BROADCAST_ADDRESS = "172.20.83.255";
+    public static final String BROADCAST_ADDRESS = "172.20.159.255";
     public InetAddress bcastAddress;
     
     DatagramSocket socket = null;

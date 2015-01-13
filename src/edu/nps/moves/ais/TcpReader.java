@@ -92,13 +92,15 @@ public class TcpReader
         }
         catch(Exception e)
         {
-            System.err.println("bad read " + e);
+            System.err.println("bad read from AIS server, exiting" + e);
         }
         finally
         {
             //System.out.println("</AISPositionReports>");
         }
         //}
+        
+        System.exit(1);
         
     }
     

@@ -6,6 +6,7 @@ import java.util.concurrent.*;
 import nl.esi.metis.aisparser.AISMessagePositionReport;
 import edu.nps.moves.dis.*;
 import edu.nps.moves.disutil.*;
+import nl.esi.metis.aisparser.AISMessage05;
 
 /**
  * Contains a table that maps AIS user IDs to DIS state information. A singleton,
@@ -138,6 +139,45 @@ public class AISEntityTable
         position.setY(disCoords[1]);
         position.setZ(disCoords[2]);
         
+        info.canSendUpdate = true;
+        
+    }
+    
+    public void setStaticInfoReport(AISMessage05 staticAISInfo)
+    {
+        DISStateInfo info = aisEntities.get(staticAISInfo.getUserID());
+        
+        // Don't have a position report yet? Create an empty entry, and 
+        // mark it as "don't send" because we have no position. 
+        if(info == null)
+        {
+           info = new DISStateInfo(null);
+            
+            info.lastAISReport = new Date();
+            // Set the entityID
+            EntityStatePdu pdu = new EntityStatePdu();
+            pdu.getEntityID().setSite(SITE_ID);
+            pdu.getEntityID().setEntity(this.getNextEntityID());
+            pdu.getEntityID().setApplication(APPLICATION_ID);
+            //System.out.println("new DIS entity, " + pdu.getEntityID().getEntity());
+
+            // Set the entity type
+            pdu.getEntityType().setEntityKind((short)1);  // Entity in world
+            pdu.getEntityType().setDomain((short)3);      // surface ship
+            pdu.getEntityType().setCountry((short)225);   // Need better country data
+            pdu.getEntityType().setCategory((short)61);   // Noncombatant ship
+            pdu.getEntityType().setSubcategory((short)3); // large fishing trawler
+            
+            info.espdu = pdu;
+        }
+        
+        info.shipName = staticAISInfo.getName();
+        info.callSign = staticAISInfo.getCallSign();
+        info.espdu.getMarking().setCharacters(info.shipName);
+        
+        // Other info here, such as draught, destination, cargo, etc.
+        
+        return;
     }
     
     /**
@@ -154,17 +194,28 @@ public class AISEntityTable
         
         Collection values = aisEntities.values();
         Iterator it = values.iterator();
-        System.out.println("Sending updates for state table, number of entries=" + values.size());
+        //System.out.println("Sending updates for state table, number of entries=" + values.size());
+        
+        int maxUpdates = 20;
+        int updateCount = 0;
         
         while(it.hasNext())
         {
             DISStateInfo info = (DISStateInfo)it.next();
             Date now = new Date();
-            if(info.lastEspduUpdate == null || info.lastEspduUpdate.getTime() + DISNetwork.HEARTBEAT > now.getTime())
+            
+            if( (info.lastEspduUpdate == null || info.lastEspduUpdate.getTime() + DISNetwork.HEARTBEAT < now.getTime()) && info.canSendUpdate)
             {
                 info.lastEspduUpdate = now;
-                disNetwork.sendPDU(info.espdu);
+                //System.out.println("Updating DIS for ship name:" + new String(info.espdu.getMarking().getCharacters()));
+                
+                //if(updateCount < maxUpdates)
+                {
+                    disNetwork.sendPDU(info.espdu);
+                }
+
             }
+            updateCount++;
         }
     }
     

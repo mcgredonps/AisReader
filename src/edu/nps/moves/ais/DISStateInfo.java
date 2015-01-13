@@ -35,15 +35,26 @@ public class DISStateInfo
     /** AIS ID (userID) */
     int aisID;
     
+    /** Ship name */
+    String shipName = null;
+    
+    /** Call sign */
+    String callSign = null;
+    
+    /** Whether we have enough info to send a postion update */
+    boolean canSendUpdate = false;
+    
 
     /** Constructor */
     public DISStateInfo(AISMessagePositionReport positionReport)
     {
-        this.lastAISPositionReport = positionReport;
+        aisID = positionReport.getUserID();
+
         creationTime = new Date();
         lastAISReport = new Date();
         lastEspduUpdate = null;
-        aisID = positionReport.getUserID();
+        
+        this.lastAISPositionReport = positionReport;
     }
     
     

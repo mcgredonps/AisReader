@@ -17,8 +17,6 @@ public class AisMessageHandler implements HandleAISMessage
         
         AISEntityTable entityTable = AISEntityTable.getInstance();
         
-        
-        
         switch(message.getMessageID())
         {
             // AIS message types 1, 2, and 3 are all variants of position reports.
@@ -56,9 +54,20 @@ public class AisMessageHandler implements HandleAISMessage
                 line = line + "/>";
                 System.out.println(line);
                     */
-                
-                
+             
                 break;
+            
+                // Static information
+             case 5:
+                 
+                 AISMessage05 staticInfo = (AISMessage05)message;
+                 String shipName = staticInfo.getName();
+                 int aisID = staticInfo.getUserID();
+                 //System.out.println("Static info:" + aisID + ", " + shipName + ", " + staticInfo.getCallSign());
+                 entityTable.setStaticInfoReport(staticInfo);
+                 
+                 break;
+                
            
                 // Punt on all the other message types for now
             

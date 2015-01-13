@@ -12,12 +12,12 @@ public class DISUpdater implements Runnable
     {
         while(true)
         {
-            System.out.println("Sending heartbeat for entire state table");
+            //System.out.println("Sending heartbeat for state table");
             AISEntityTable entityTable = AISEntityTable.getInstance();
             entityTable.doDISNetworkUpdates();
             try
             {
-                Thread.sleep(5000);
+                Thread.sleep(20000);
             }
             catch(Exception e)
             {
