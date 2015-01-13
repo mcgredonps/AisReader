@@ -118,7 +118,7 @@ public class TcpReader
     public static void main(String[] args)
     {
         String host = Defaults.AIS_HOST;
-        int portInt = Defaults.PORT;
+        int portInt = Defaults.AIS_PORT;
         int listenTime = Defaults.LISTEN_TIME_SECONDS;
         
         InetAddress hostIp = null;

@@ -17,7 +17,7 @@ public class DISUpdater implements Runnable
             entityTable.doDISNetworkUpdates();
             try
             {
-                Thread.sleep(20000);
+                Thread.sleep(Defaults.HEARTBEAT);
             }
             catch(Exception e)
             {

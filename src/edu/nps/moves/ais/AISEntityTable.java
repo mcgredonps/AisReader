@@ -204,7 +204,7 @@ public class AISEntityTable
             DISStateInfo info = (DISStateInfo)it.next();
             Date now = new Date();
             
-            if( (info.lastEspduUpdate == null || info.lastEspduUpdate.getTime() + DISNetwork.HEARTBEAT < now.getTime()) && info.canSendUpdate)
+            if( (info.lastEspduUpdate == null || info.lastEspduUpdate.getTime() + Defaults.HEARTBEAT < now.getTime()) && info.canSendUpdate)
             {
                 info.lastEspduUpdate = now;
                 //System.out.println("Updating DIS for ship name:" + new String(info.espdu.getMarking().getCharacters()));

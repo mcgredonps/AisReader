@@ -15,14 +15,7 @@ import edu.nps.moves.dis.*;
  */
 public class DISNetwork 
 {
-    /** Heartbeat period, in ms */
-    public static final int HEARTBEAT = 5000;
-    public static final int DIS_PORT = 3000;
-    
-    /** This is hardcoded, but it should be found at runtime by walking the
-     * NetworkInterface objects.
-     */
-    public static final String BROADCAST_ADDRESS = "172.20.159.255";
+   
     public InetAddress bcastAddress;
     
     DatagramSocket socket = null;
@@ -43,9 +36,9 @@ public class DISNetwork
     {
         try
         {
-            socket = new DatagramSocket(DIS_PORT);
+            socket = new DatagramSocket(Defaults.DIS_PORT);
             socket.setBroadcast(true);
-            bcastAddress = InetAddress.getByName(BROADCAST_ADDRESS);
+            bcastAddress = InetAddress.getByName(Defaults.DIS_BROADCAST_ADDRESS);
         }
         catch(Exception e)
         {
@@ -60,7 +53,7 @@ public class DISNetwork
         try
         {
             byte[] disData = aPdu.marshalWithDisAbsoluteTimestamp();
-            DatagramPacket packet = new DatagramPacket(disData, disData.length, bcastAddress, DIS_PORT);
+            DatagramPacket packet = new DatagramPacket(disData, disData.length, bcastAddress, Defaults.DIS_PORT);
             socket.send(packet);
         }
         catch(Exception e)
